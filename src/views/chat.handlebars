@@ -1,0 +1,54 @@
+<div class="container pt-5">
+<div>
+    <h1 class="title">Chat</h1>
+    <label class="label">Mensaje: </label>
+    <input class="input" type="text" id="chatBox">
+</div>
+<hr>
+<div class="box">
+    <p id="messageLogs"></p>
+</div>
+
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+    const socket = io()
+    let chatBox = document.getElementById("chatBox")
+
+    Swal.fire({
+        title: "Identificate",
+        input: "text",
+        text: "Ingresa tu Email",
+
+        inputValidator: (value) => {
+            return !value && "Necesitas identificarte para ingresar a la sala"
+        }
+
+    }).then(result => {
+        user = result.value
+    })
+
+    let user
+
+    chatBox.addEventListener("keyup", evt => {
+        if (evt.key === "Enter") {
+            if (chatBox.value.trim().length > 0) {
+                socket.emit("message", { user: user, message: chatBox.value })
+                chatBox.value = ""
+            }
+        }
+    })
+
+    socket.on("messageLogs", data => {
+        console.log(data)
+        let log = document.getElementById('messageLogs')
+        let messages = ""
+        data.forEach(message => {
+            messages = messages + `${message.user} dice: ${message.message}</br>`
+        })
+        log.innerHTML = messages
+    })
+
+</script>

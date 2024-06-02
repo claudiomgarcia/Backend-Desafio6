@@ -1,0 +1,127 @@
+<div class="container pt-5">
+    <div class="buttons is-right">
+        <b>Bienvenido {{user.first_name}}</b>
+        <a href="/profile" class="button is-small is-link">Mi cuenta</a>
+        <form action="/api/sessions/logout" method="POST">
+            <button type="submit" class="button is-small is-dark">Cerrar Sesión</button>
+        </form>
+    </div>
+    <h1 class="title pb-3"><a href="/products">Lista de Productos</a></h1>
+
+    <div class="buttons is-right">
+        <a href="/carts/{{defaultCart._id}}" class="button is-small is-link"><i
+                class="fas fa-shopping-cart p-1"></i>Carrito
+            ({{countProducts defaultCart.products}})</a>
+    </div>
+
+    <div class="dropdown is-hoverable is-left pb-3">
+        <div class="dropdown-trigger">
+            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu2">
+                <span>Ordenar por:</span>
+                <span class="icon is-small">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                </span>
+            </button>
+        </div>
+        <div class="dropdown-menu" id="dropdown-menu2" role="menu">
+            <div class="dropdown-content">
+                <a href="{{ascLink}}" class="dropdown-item"> Manor Precio </a>
+                <a href="{{descLink}}" class="dropdown-item"> Mayor Precio </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="dropdown is-hoverable is-left pb-3">
+        <div class="dropdown-trigger">
+            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu3">
+                <span>Ver:</span>
+                <span class="icon is-small">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                </span>
+            </button>
+        </div>
+        <div class="dropdown-menu" id="dropdown-menu3" role="menu">
+            <div class="dropdown-content">
+                <a href="?query=:true" class="dropdown-item"> Disponible </a>
+                <a href="?query=:false" class="dropdown-item"> No Disponible </a>
+                <a href="/products" class="dropdown-item"> Todos </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="columns is-centered">
+        <div class="column">
+            <div class="columns is-multiline is-centered">
+                {{#each readProducts}}
+                <div class="column is-one-fifth">
+                    <div class="card" style="height: 100%; background-color: #0F1013">
+                        <div class="level px-1 pt-2">
+                            <div class="level-left">
+                                <p class="level-item has-text-left">
+                                    <a href="?query={{category}}"
+                                        class="button is-small is-link is-rounded">{{category}}</a>
+                                </p>
+                            </div>
+                            <div class="level-right">
+                                <p class="level-item has-text-right">
+                                    {{#if status}}
+                                    <button class="button is-small is-dark is-hovered is-rounded"
+                                        style="cursor: default">
+                                        Stock: {{stock}}</button>
+                                    {{else}}
+                                    <button class="button is-small is-danger is-hovered is-rounded"
+                                        style="cursor: default">
+                                        No Disponible</button>
+                                    {{/if}}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="card-content mb-6" style="flex-grow: 1">
+                            <p class="title is-5">{{title}}</p>
+                            <p class="subtitle is-6">${{price}}</p>
+                            <p class="is-size-6">{{truncate description 100}}</p>
+                        </div>
+                        <div style="position: absolute; bottom: 0; right: 0;">
+                            <p class="buttons p-2">
+                                {{#if status}}
+                                <button class="button is-link is-rounded" data-cid="{{../defaultCart._id}}"
+                                    data-pid="{{id}}" onclick="addToCart(this)">Añadir al carrito</button>
+                                {{else}}
+                                <button class="button is-link is-rounded" disabled>Añadir al carrito</button>
+                                {{/if}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+    <div class="pb-6">
+        <nav class="pagination is-centered pt-3" role="navigation" aria-label="pagination">
+            {{#if hasPrevPage}}
+            <a href="{{prevLink}}" class="pagination-previous">Anterior</a>
+            {{else}}
+            <button class="pagination-previous" disabled>Anterior</button>
+            {{/if}}
+            {{#if hasNextPage}}
+            <a href="{{nextLink}}" class="pagination-next">Siguiente</a>
+            {{else}}
+            <button class="pagination-next" disabled>Siguiente</button>
+            {{/if}}
+
+            <ul class="pagination-list">
+                {{#each pages}}
+                <li>
+                    <a href="{{pageLink}}" class="pagination-link {{#if isCurrent}} is-current{{/if}}"
+                        aria-label="Goto page {{pageNumber}}" aria-current="{{#if isCurrent}}page{{/if}}">
+                        {{pageNumber}}
+                    </a>
+                </li>
+                {{/each}}
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<script src="/js/products.js"></script>

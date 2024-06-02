@@ -1,0 +1,54 @@
+<section class="section full-height">
+    <div class="container full-height">
+        <div class="columns is-centered is-vcentered full-height">
+            <div class="column is-4">
+                <h1 class="title has-text-centered">Registrarse</h1>
+                <form action="/api/sessions/register" method="post">
+                    <div class="field">
+                        <label class="label">Nombre</label>
+                        <div class="control">
+                            <input class="input" type="text" name="first_name" required>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Apellido</label>
+                        <div class="control">
+                            <input class="input" type="text" name="last_name" required>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Email</label>
+                        <div class="control">
+                            <input class="input" type="email" name="email" required>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Edad</label>
+                        <div class="control">
+                            <input class="input" type="number" name="age" required>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Contraseña</label>
+                        <div class="control">
+                            <input class="input" type="password" name="password" required>
+                        </div>
+                    </div>
+
+                    <div class="field is-grouped">
+                        <div class="control">
+                            <button class="button is-link" type="submit">Registrarse</button>
+                        </div>
+                        <div class="control">
+                            <a class="button is-light" href="/login">Cancelar</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

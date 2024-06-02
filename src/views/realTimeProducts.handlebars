@@ -1,0 +1,99 @@
+<div class="container pt-5">
+    <h1 class="title pb-3"><a href="realtimeproducts">Realtime Products</a></h1>
+    <div class="buttons is-right">
+        <button class="button is-link"><i class="fas fa-shopping-cart p-1"></i>Carrito</button>
+    </div>
+
+    <div class="dropdown is-hoverable is-left pb-3">
+        <div class="dropdown-trigger">
+            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu3">
+                <span>Ordenar por:</span>
+                <span class="icon is-small">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                </span>
+            </button>
+        </div>
+        <div class="dropdown-menu" id="dropdown-menu3" role="menu">
+            <div class="dropdown-content">
+                <a href="${ascLink}" class="dropdown-item"> Manor Precio </a>
+                <a href="${descLink}" class="dropdown-item"> Mayor Precio </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="columns is-centered">
+        <div class="column">
+
+            <div class="columns is-multiline is-centered" id="list-products">
+
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <hr>
+
+    <div class="fixed-grid">
+        <div class="grid">
+            <div class="cell">
+                <h2 class="subtitle">Agregar Producto</h2>
+                <div class="field column is-half">
+                    <form id="formProduct">
+                        <label class="label">Titulo</label>
+                        <div class="control mb-2">
+                            <input class="input" name="title" id="title" type="text" placeholder="Título" required>
+                        </div>
+                        <label class="label">Descripción</label>
+                        <div class="control mb-2">
+                            <input class="input" name="description" id="description" type="text"
+                                placeholder="Descripción" required>
+                        </div>
+                        <label class="label">Categoria</label>
+                        <div class="control mb-2">
+                            <input class="input" name="category" id="category" type="text" placeholder="Descripción"
+                                required>
+                        </div>
+                        <label class="label">Precio</label>
+                        <div class="control mb-2">
+                            <input class="input" name="price" id="price" type="number" placeholder="Precio" required>
+                        </div>
+                        <label class="label">Codigo</label>
+                        <div class="control mb-2">
+                            <input class="input" name="code" id="code" type="text" placeholder="Código" required>
+                        </div>
+                        <label class="label">Stock</label>
+                        <div class="control mb-2">
+                            <input class="input" name="stock" id="stock" type="number" placeholder="Stock" required>
+                        </div>
+                        <label class="label">Imágen (url)</label>
+                        <div class="control mb-2">
+                            <input class="input" name="thumbnail" id="thumbnail" type="text" placeholder="Imágen (url)">
+                        </div>
+                        <label class="label">Status</label>
+                        <div class="control mb-2">
+                            <input name="status" class="checkbox" type="checkbox" value="true" id="flexCheckChecked"
+                                checked>
+                        </div>
+                        <div class="control mb-2">
+                            <button class="button is-dark" type="submit" id="add-btn">Agregar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="cell">
+                <h2 class="subtitle">Eliminar Producto</h2>
+                <div class="field column is-half">
+                    <label class="label">Id de Producto</label>
+                    <div class="control mb-2">
+                        <input class="input" name="id" id="id-prod" type="text" placeholder="ID" required>
+                    </div>
+                    <div class="control mb-2">
+                        <button class="button is-danger" type="button" id="delete-btn">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/js/index.js"></script>

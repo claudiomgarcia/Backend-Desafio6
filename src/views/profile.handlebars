@@ -1,0 +1,52 @@
+<style>
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            background-color: #e1e1e1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #fff;
+        }
+    </style>
+
+<div class="container pt-5">
+    <h1 class="title pb-3"><a href="/products">Inicio</a></h1>
+
+    <div class="buttons is-right">
+        <form action="/api/sessions/logout" method="POST">
+            <button type="submit" class="button is-dark is-small">Cerrar Sesión</button>
+        </form>
+    </div>
+
+    <section class="section">
+        <div class="container">
+
+            <div class="columns">
+                <div class="column is-one-quarter">
+                    <div class="profile-pic">
+                        <span>Foto</span>
+                    </div>
+                </div>
+                <div class="column">
+                    <h2 class="title">Información del Usuario</h2>
+                    <p><strong>Nombre:</strong> {{user.first_name}}</p>
+                    <p><strong>Apellido:</strong> {{user.last_name}}</p>
+                    <p><strong>Email:</strong> {{user.email}}</p>
+                    <p><strong>Edad:</strong> {{user.age}}</p>
+                    <p><strong>Rol:</strong> {{user.rol}}</p>
+                </div>
+            </div>
+            <hr>
+            <!-- Fila inferior -->
+            {{!-- <div class="columns">
+                <div class="column">
+                    <h2 class="title">Mi Carrito</h2>
+                    <p>Aquí se mostrarán los productos del carrito de compras.</p>
+                </div>
+            </div> --}}
+        </div>
+    </section>
+</div>

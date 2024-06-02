@@ -1,0 +1,56 @@
+<div class="container pt-5">
+    <h1 class="title pb-3"><a href="/products">Inicio</a></h1>
+
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Detalle del Carrito - ({{cart._id}})</h1>
+            <table class="table is-fullwidth is-striped">
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>Título</th>
+                        <th>Descripción</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each cart.products}}
+                    <tr>
+                        <td><img src="{{this.product.thumbnail}}" alt="{{this.product.title}}" style="width: 100px">
+                        </td>
+                        <td>{{this.product.title}}</td>
+                        <td>{{this.product.description}}</td>
+                        <td>
+
+                            <div class="field has-addons">
+                                <p class="control">
+                                    <button class="button is-danger"disabled>-</button>
+                                </p>
+                                <p class="control">
+                                    <input class="input has-text-centered" type="text" value="{{this.quantity}}" style="width: 40px" disabled>
+                                </p>
+                                <p class="control">
+                                    <button class="button is-success" disabled>+</button>
+                                </p>
+                            </div>
+
+                        </td>
+                        <td>${{this.product.price}}</td>
+                        <td>${{multiply this.product.price this.quantity}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="5" class="has-text-right">Total</th>
+                        <th>${{cartTotal cart.products}}</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </section>
+
+
+</div>
