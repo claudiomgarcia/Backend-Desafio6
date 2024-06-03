@@ -1,66 +1,56 @@
 import { Router } from 'express'
-import User from '../../dao/models/users.model.js'
-import { createHash, isValidPassword } from '../../utils.js'
-
+import passport from 'passport'
 
 const sessionsRouter = Router()
 
-sessionsRouter.post('/register', async (req, res) => {
-    const { first_name, last_name, email, age, password } = req.body
-    try {
-        const newUser = new User({
-            first_name,
-            last_name,
-            email,
-            age,
-            password: createHash(password)
+sessionsRouter.post('/register', (req, res, next) => {
+    passport.authenticate('register', (err, user, info) => {
+        if (err) {
+            return res.status(500).json({ status: "error", message: "Error al registrar el usuario: " + err })
+        }
+        if (!user) {
+            return res.status(400).json({ status: "error", message: info.message })
+        }
+        req.logIn(user, (err) => {
+            if (err) {
+                return res.status(500).json({ status: "error", message: "Error al iniciar sesión: " + err })
+            }
+            res.json({ status: "success", message: "Usuario registrado", redirectUrl: "/login" })
         })
-        await newUser.save()
-        res.redirect('/login')
-    } catch (err) {
-        res.status(500).send('Error al registrar usuario')
-    }
+    })(req, res, next)
 })
 
-sessionsRouter.post('/login', async (req, res) => {
-    const { email, password } = req.body
-    try {
-        if (email === "adminCoder@coder.com" && password === "adminCod3r123") {
-            req.session.user = {
-                first_name: 'CoderAdmin',
-                email: email,
-                rol: 'admin'
-            }
-            req.session.admin = true
-            res.json({ redirectUrl: '/products' })
+sessionsRouter.post('/login', (req, res, next) => {
+    passport.authenticate('login', (err, user, info) => {
+        if (err) {
+            return next(err)
         }
-        else {
-            const user = await User.findOne({ email })
-            if (!user) return res.status(404).json({ error: 'Usuario no encontrado' })
-
-            const isMatch = isValidPassword(user, password)
-            if (!isMatch) return res.status(401).json({ error: 'Contraseña incorrecta' })
-
-            delete user.password
-
-            req.session.user = {
-                id: user._id,
-                first_name: user.first_name,
-                last_name: user.last_name,
-                email: user.email,
-                age: user.age,
-                rol: 'user'
-            }
-            res.json({ redirectUrl: '/products' })
+        if (!user) {
+            return res.status(400).json({ error: info.message })
         }
-    } catch (err) {
-        res.status(500).json({ error: 'Error al iniciar sesión' })
-    }
+        req.logIn(user, err => {
+            if (err) {
+                return next(err)
+            }
+            try {
+                req.session.user = {
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                    email: user.email,
+                    age: user.age,
+                    isAdmin: user.isAdmin
+                }
+                res.json({ redirectUrl: '/products' })
+            } catch (err) {
+                res.status(500).send('Error al iniciar sesión')
+            }
+        })
+    })(req, res, next)
 })
 
 sessionsRouter.post('/logout', (req, res) => {
     req.session.destroy((err) => {
-        if (err) return res.status(500).send('Error al cerrar sesión')
+        if (err) res.status(500).json({ error: 'Error al cerrar sesión' })
         res.redirect('/login')
     })
 })

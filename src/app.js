@@ -13,6 +13,8 @@ import socketChat from './listener/socketChat.js'
 import connectDB from './config/db.js'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
+import passport from 'passport'
+import initializePassport from './config/passport.config.js'
 
 dotenv.config()
 
@@ -45,6 +47,10 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }))
+
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use('/api/products', productsRouter)
 app.use('/api/carts', cartsRouter)

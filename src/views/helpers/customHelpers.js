@@ -10,11 +10,11 @@ export default {
         let total = 0
         products.forEach(product => {
             total += product.quantity
-        });
+        })
         return total
     },
     cartTotal: function (products) {
-        let total = 0;
+        let total = 0
         products.forEach(product => {
             total += product.product.price * product.quantity
         })

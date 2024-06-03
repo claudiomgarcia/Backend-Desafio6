@@ -36,7 +36,7 @@
                     <p><strong>Apellido:</strong> {{user.last_name}}</p>
                     <p><strong>Email:</strong> {{user.email}}</p>
                     <p><strong>Edad:</strong> {{user.age}}</p>
-                    <p><strong>Rol:</strong> {{user.rol}}</p>
+                    <p><strong>Rol:</strong> {{#if user.isAdmin}}Admin{{else}}User{{/if}}</p>
                 </div>
             </div>
             <hr>
