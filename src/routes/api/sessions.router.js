@@ -1,13 +1,20 @@
 import { Router } from 'express'
 import User from '../../dao/models/users.model.js'
-import bcrypt from 'bcryptjs'
+import { createHash, isValidPassword } from '../../utils.js'
+
 
 const sessionsRouter = Router()
 
 sessionsRouter.post('/register', async (req, res) => {
     const { first_name, last_name, email, age, password } = req.body
     try {
-        const newUser = new User({ first_name, last_name, email, age, password })
+        const newUser = new User({
+            first_name,
+            last_name,
+            email,
+            age,
+            password: createHash(password)
+        })
         await newUser.save()
         res.redirect('/login')
     } catch (err) {
@@ -30,9 +37,11 @@ sessionsRouter.post('/login', async (req, res) => {
         else {
             const user = await User.findOne({ email })
             if (!user) return res.status(404).json({ error: 'Usuario no encontrado' })
-                
-            const isMatch = await bcrypt.compare(password, user.password)
+
+            const isMatch = isValidPassword(user, password)
             if (!isMatch) return res.status(401).json({ error: 'Contraseña incorrecta' })
+
+            delete user.password
 
             req.session.user = {
                 id: user._id,
