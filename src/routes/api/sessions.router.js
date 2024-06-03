@@ -48,6 +48,14 @@ sessionsRouter.post('/login', (req, res, next) => {
     })(req, res, next)
 })
 
+sessionsRouter.get("/github", passport.authenticate("github",{scope:["user:email"]}),async(req,res)=>{})
+
+
+sessionsRouter.get("/githubcallback",passport.authenticate("github",{failureRedirect:"/login"}),async(req,res)=>{
+    req.session.user=req.user
+    res.redirect("/")
+})
+
 sessionsRouter.post('/logout', (req, res) => {
     req.session.destroy((err) => {
         if (err) res.status(500).json({ error: 'Error al cerrar sesión' })
